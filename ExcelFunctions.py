@@ -15,9 +15,9 @@ start_row = 3
 
 
 if platform_name == "Darwin":
-    MAC_os_Save_path=f'/Users/{username}/Desktop/AfterRemove.xlsx'
+    Removed_Save_path=f'/Users/Desktop/AfterRemove.xlsx'
+    Convert_Save_path=f'/Users/Desktop/AfterConvert.xlsx'
 else:
-
     Removed_Save_path = f'C:\\4M formatted result\\AfterRemove.xlsx'
     Convert_save_path = f'C:\\4M formatted result\\AfterConvert.xlsx'
     
