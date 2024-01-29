@@ -111,7 +111,7 @@ def cancel_btn():
 
 root = tk.Tk()
 root.title("File Dialog")
-root.geometry('270x400')
+root.geometry('270x380')
 
 font_style = ('Helvetica', 12, 'bold')
 
@@ -137,6 +137,6 @@ meragrBtn=tk.Button(root, text='Merage File',command=merage_fun,width=13)
 meragrBtn.pack(pady=15)
 
 cancelBtn=tk.Button(root, text='Exit', command=cancel_btn, width=5)
-cancelBtn.pack(pady=15)
+cancelBtn.pack(pady=10)
 
 root.mainloop()
