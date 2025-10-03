@@ -1,10 +1,51 @@
-# 忽略 PyInstaller 輸出
-/build/
-/dist/
-
-# 如果有暫存檔，也可以順便加上
+# --- Python 基本 ---
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyd
 *.pyo
-*.spec
-ExcelFunctions.spec
+*.so
+*.dll
+*.log
+
+# 測試/工具快取
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# 套件/打包輸出
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+*.spec        # PyInstaller 產生的 spec
+
+# 虛擬環境
+.venv/
+venv/
+env/
+
+# IDE / 編輯器
+.vscode/
+.idea/
+*.code-workspace
+
+# OS 雜項
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 環境變數檔（如有）
+.env
+.env.*
+!.env.example
+
+# Excel 暫存檔
+~$*.xls*
