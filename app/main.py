@@ -1,8 +1,9 @@
 import tkinter as tk
-from app.gui.main_window import MainWindow
+import ttkbootstrap as tb
+from app.gui.ui_beautified import MainWindowBootstrap
 
 def main():
-    root = tk.Tk()
-    root.title("File Dialog")
-    app = MainWindow(root)
+    root = tb.Window(themename="darkly")
+    root.title("CSC 4M Excel Formatter")
+    MainWindowBootstrap(root)
     root.mainloop()
