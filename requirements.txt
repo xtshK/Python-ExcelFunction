@@ -1,0 +1,4 @@
+pandas
+openpyxl
+# 若要支援 .xls：
+# xlrd==1.2.0
