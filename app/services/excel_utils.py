@@ -1,6 +1,10 @@
 from pathlib import Path
 import pandas as pd
 import openpyxl
+from pathlib import Path
+import pandas as pd
+
+
 
 def unique_path(path: Path) -> Path:
     """若檔名存在，自動加 _1, _2… 避免覆蓋"""
@@ -80,4 +84,33 @@ def convert_formulas_to_values(src_path: str, out_path: str):
     wb_write.save(str(out))
     wb_values.close()
     wb_write.close()
+    return str(out)
+
+def clean_excel_file_to_values(src_path: str, out_dir: str | None = None) -> str:
+    """
+    讀取所有工作表為當前值（不含公式計算），輸出 *_cleaned.xlsx。
+    注意：若原檔從未被 Excel 開啟/儲存過，pandas/openpyxl 讀到的可能是空值（沒快取）。
+    """
+    src = Path(src_path)
+    engine = "openpyxl" if src.suffix.lower() == ".xlsx" else "xlrd"  # .xls 需 xlrd==1.2.0
+    excel_data = pd.read_excel(src, sheet_name=None, engine=engine)
+
+    out_dir_p = Path(out_dir) if out_dir else src.parent
+    out_dir_p.mkdir(parents=True, exist_ok=True)
+
+    # 產生不覆蓋的檔名
+    base = src.stem
+    out = out_dir_p / f"{base}_cleaned.xlsx"
+    i = 1
+    while out.exists():
+        out = out_dir_p / f"{base}_cleaned_{i}.xlsx"
+        i += 1
+
+    with pd.ExcelWriter(out, engine="openpyxl") as writer:
+        for sheet_name, df in excel_data.items():
+            safe = str(sheet_name)[:31]
+            for ch in "[]*?:/\\":
+                safe = safe.replace(ch, "_")
+            df.to_excel(writer, sheet_name=safe, index=False)
+
     return str(out)

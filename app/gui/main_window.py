@@ -10,6 +10,10 @@ from app.services.excel_utils import (
     convert_formulas_to_values,
 )
 
+import tkinter as tk
+from tkinter import filedialog, messagebox
+from app.gui.formula_cleaner import ExcelFormulaRemover
+
 COLUMN_NAMES = ['Year','Month','Country','Model-Type','Model-Size','Model','Currency','Column1','Model Price','Column3','Forecase Qty']
 
 class MainWindow:
@@ -34,6 +38,10 @@ class MainWindow:
         tk.Button(root, text="Merge Files", command=self.on_merge, width=18).pack(pady=10)
 
         tk.Button(root, text='Exit', command=self.root.destroy, width=8).pack(pady=14)
+
+        # formula cleaner window
+        tk.Button(root, text="Formula Cleaner", width=18, command=self.open_formula_cleaner).pack(pady=10)
+
 
     def _center(self, w: int, h: int):
         sw, sh = self.root.winfo_screenwidth(), self.root.winfo_screenheight()
@@ -83,3 +91,5 @@ class MainWindow:
                 messagebox.showinfo("Hint", "No Excel files found in the selected folder.")
         except Exception as e:
             messagebox.showerror("Error", f"Merge failed:\n{e}")
+    def open_formula_cleaner(self):
+        ExcelFormulaRemover(master=self.root)
