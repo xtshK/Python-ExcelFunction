@@ -36,12 +36,10 @@ class MainWindow:
         # Merge
         tk.Label(root, text='3. Combine the Allocate Files \n worksheets into one worksheet.').pack(pady=2)
         tk.Button(root, text="Merge Files", command=self.on_merge, width=18).pack(pady=10)
-
-        tk.Button(root, text='Exit', command=self.root.destroy, width=8).pack(pady=14)
-
         # formula cleaner window
         tk.Button(root, text="Formula Cleaner", width=18, command=self.open_formula_cleaner).pack(pady=10)
 
+        tk.Button(root, text='Exit', command=self.root.destroy, width=8).pack(pady=14)
 
     def _center(self, w: int, h: int):
         sw, sh = self.root.winfo_screenwidth(), self.root.winfo_screenheight()
