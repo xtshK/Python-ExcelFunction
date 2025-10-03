@@ -1,3 +1,9 @@
-/build/*
+# 忽略 PyInstaller 輸出
+/build/
+/dist/
 
-/dist/*
+# 如果有暫存檔，也可以順便加上
+__pycache__/
+*.pyc
+*.pyo
+*.spec
