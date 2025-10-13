@@ -49,3 +49,10 @@ Desktop.ini
 
 # Excel 暫存檔
 ~$*.xls*
+
+
+# certificate to gitgnore
+*.pfx
+*.p12
+*.cer
+secure/
