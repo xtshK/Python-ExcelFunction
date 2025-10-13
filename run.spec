@@ -1,13 +1,18 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+from ttkbootstrap import __path__ as ttk_path
 
+# 把 ttkbootstrap 的內建樣式、圖示資料夾打包進去
+datas = [
+    (os.path.join(ttk_path[0], "_tk_data"), "ttkbootstrap/_tk_data"),
+    ('app/assets', 'app/assets'),  # 你原本的 assets
+]
 
 a = Analysis(
     ['run.py'],
     pathex=['.'],
     binaries=[],
-    datas=[
-        ('app/assets','app/assets'),
-    ],
+    datas=datas,
     hiddenimports=[
         'openpyxl',
         'et_xmlfile',
@@ -42,4 +47,3 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
-
