@@ -1,10 +1,20 @@
-from pathlib import Path
-import pandas as pd
 import openpyxl
 from pathlib import Path
 import pandas as pd
+import  re
 
+_EXTRA_SPACES = "\u00A0\u2007\u202F\u3000"  # 常見非斷行/全形空白
 
+def _is_blank_a_cell(value) -> bool:
+    """判斷 A 欄是否空白（包含全形／NBSP 空白）"""
+    if value is None:
+        return True
+    if isinstance(value, str):
+        # 把特殊空白轉成一般空白後去掉
+        for ch in _EXTRA_SPACES:
+            value = value.replace(ch, " ")
+        return value.strip() == ""
+    return False
 
 def unique_path(path: Path) -> Path:
     """若檔名存在，自動加 _1, _2… 避免覆蓋"""
@@ -34,26 +44,36 @@ def merge_many_files(folder: str, column_names=None):
             results.append(out)
     return results
 
+
 def remove_spaces_first_col_and_drop_blank_rows(src_path: str, out_path: str, start_row: int = 3):
     """
     從第 start_row 列開始：
-      1) 把 A 欄（第1欄）的字串移除空白
-      2) 若整列皆空，則刪除
+      1) 移除 A 欄內的所有空白字元（含全形／NBSP）
+      2) 若 A 欄為空白，則整列刪除
     存成 out_path
     """
     wb = openpyxl.load_workbook(src_path, data_only=True)
+
     for name in wb.sheetnames:
         ws = wb[name]
         to_delete = []
+
         for r in range(start_row, ws.max_row + 1):
             cell = ws.cell(row=r, column=1)
+            # 1️⃣ 先清理空白
             if isinstance(cell.value, str):
+                for ch in _EXTRA_SPACES:
+                    cell.value = cell.value.replace(ch, " ")
                 cell.value = cell.value.replace(" ", "")
-            # 整列是否為空
-            if all((ws.cell(row=r, column=c).value in (None, "")) for c in range(1, ws.max_column + 1)):
+
+            # 2️⃣ 若 A 欄是空白 → 記錄刪除
+            if _is_blank_a_cell(cell.value):
                 to_delete.append(r)
+
+        # 反向刪除，避免位移錯亂
         for r in reversed(to_delete):
             ws.delete_rows(r)
+
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(str(out))
